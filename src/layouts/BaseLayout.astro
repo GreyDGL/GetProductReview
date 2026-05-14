@@ -4,6 +4,7 @@ import SEO from '../components/SEO.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE } from '../lib/site';
+import { link } from '../lib/path';
 
 type Props = {
   title: string;
@@ -26,9 +27,9 @@ const analyticsToken = SITE.cloudflareAnalyticsToken;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title={`${SITE.title} RSS`} href="/rss.xml" />
-    <link rel="alternate" type="application/feed+json" title={`${SITE.title} JSON Feed`} href="/feed.json" />
+    <link rel="icon" type="image/svg+xml" href={link('/favicon.svg')} />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.title} RSS`} href={link('/rss.xml')} />
+    <link rel="alternate" type="application/feed+json" title={`${SITE.title} JSON Feed`} href={link('/feed.json')} />
     <SEO {...props} />
     <slot name="head" />
     {analyticsToken && (

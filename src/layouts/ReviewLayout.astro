@@ -5,6 +5,7 @@ import Byline from '../components/Byline.astro';
 import Prose from '../components/Prose.astro';
 import { readingTime } from '../lib/reading-time';
 import { SITE } from '../lib/site';
+import { link } from '../lib/path';
 
 type ListEntry = {
   position: number;
@@ -94,7 +95,7 @@ const rt = readingTime(entry.body ?? '');
         <p class="eyebrow">Methodology</p>
         <p>
           Reviews on {SITE.title} are independent and disclose how the product
-          was tested. See the <a href="/about">about page</a> for full methodology
+          was tested. See the <a href={link('/about')}>about page</a> for full methodology
           and disclosures.
         </p>
       </section>
@@ -103,13 +104,13 @@ const rt = readingTime(entry.body ?? '');
         <p class="eyebrow">About the author</p>
         <p>
           <strong>{d.author}</strong> writes hands-on reviews at {SITE.title}.
-          <a href="/about">More about the author →</a>
+          <a href={link('/about')}>More about the author →</a>
         </p>
       </section>
 
       <section class="review__more">
         <p class="eyebrow">More reviews</p>
-        <p><a href="/reviews">Browse all reviews →</a></p>
+        <p><a href={link('/reviews')}>Browse all reviews →</a></p>
       </section>
     </footer>
   </article>

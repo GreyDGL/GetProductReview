@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaOrg from '../components/SchemaOrg.astro';
 import { SITE } from '../lib/site';
+import { link } from '../lib/path';
 ---
 
 <BaseLayout
@@ -81,8 +82,8 @@ import { SITE } from '../lib/site';
       <h2>Contact</h2>
       <p>
         Reach me at <a href={`mailto:${SITE.author.email}`}>{SITE.author.email}</a>.
-        Subscribe via <a href="/rss.xml">RSS</a> or
-        <a href="/feed.json">JSON feed</a>.
+        Subscribe via <a href={link('/rss.xml')}>RSS</a> or
+        <a href={link('/feed.json')}>JSON feed</a>.
       </p>
     </section>
   </article>

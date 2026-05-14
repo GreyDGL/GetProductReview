@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { SITE } from '../lib/site';
+import { link } from '../lib/path';
 import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
@@ -17,7 +18,7 @@ export async function GET(context: APIContext) {
       title: entry.data.title,
       description: entry.data.description,
       pubDate: entry.data.publishDate,
-      link: `/reviews/${entry.id}`,
+      link: link(`/reviews/${entry.id}`),
       author: entry.data.author,
       categories: entry.data.tags,
     })),

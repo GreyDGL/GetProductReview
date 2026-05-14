@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import ReviewLayout from '../../layouts/ReviewLayout.astro';
+import { link } from '../../lib/path';
 
 export async function getStaticPaths() {
   const reviews = await getCollection('reviews', ({ data }) => !data.draft);
@@ -15,7 +16,7 @@ type Props = { entry: CollectionEntry<'reviews'> };
 
 const { entry } = Astro.props as Props;
 const { Content } = await render(entry);
-const url = `/reviews/${entry.id}`;
+const url = link(`/reviews/${entry.id}`);
 ---
 
 <ReviewLayout entry={entry} url={url}>

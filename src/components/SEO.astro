@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../lib/site';
+import { absoluteUrl } from '../lib/path';
 
 type Props = {
   title: string;
@@ -26,13 +27,15 @@ const {
 const fullTitle =
   title === SITE.title ? title : `${title} — ${SITE.title}`;
 
+// Astro.url.pathname already includes the configured base path,
+// so building the canonical URL with new URL() against the site origin works.
 const canonicalURL = canonical
   ? new URL(canonical, SITE.url).toString()
   : new URL(Astro.url.pathname, SITE.url).toString();
 
 const ogImage = image
   ? new URL(image, SITE.url).toString()
-  : new URL(SITE.defaultOgImage, SITE.url).toString();
+  : absoluteUrl(SITE.defaultOgImage, SITE.url);
 ---
 
 <title>{fullTitle}</title>

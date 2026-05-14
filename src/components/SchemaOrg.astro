@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../lib/site';
+import { absoluteUrl } from '../lib/path';
 
 type WebsiteProps = {
   type: 'website';
@@ -37,10 +38,13 @@ type Props = WebsiteProps | PersonProps | ReviewProps;
 
 const props = Astro.props as Props;
 
+const homeUrl = absoluteUrl('/', SITE.url);
+const authorUrl = absoluteUrl(SITE.author.aboutPath, SITE.url);
+
 const authorPerson = {
   '@type': 'Person',
   name: SITE.author.name,
-  url: SITE.author.url,
+  url: authorUrl,
   ...(SITE.author.sameAs.length > 0 ? { sameAs: SITE.author.sameAs } : {}),
 };
 
@@ -51,7 +55,7 @@ if (props.type === 'website') {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE.title,
-    url: SITE.url,
+    url: homeUrl,
     description: SITE.description,
     publisher: authorPerson,
     inLanguage: 'en-US',
@@ -61,14 +65,15 @@ if (props.type === 'website') {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: SITE.author.name,
-    url: SITE.author.url,
+    url: authorUrl,
     ...(SITE.author.sameAs.length > 0 ? { sameAs: SITE.author.sameAs } : {}),
   };
 } else {
+  // props.url is already base-prefixed when passed in from [...slug].astro.
   const reviewURL = new URL(props.url, SITE.url).toString();
   const reviewImage = props.image
     ? new URL(props.image, SITE.url).toString()
-    : new URL(SITE.defaultOgImage, SITE.url).toString();
+    : absoluteUrl(SITE.defaultOgImage, SITE.url);
 
   const articleNode: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -84,7 +89,7 @@ if (props.type === 'website') {
     publisher: {
       '@type': 'Organization',
       name: SITE.title,
-      url: SITE.url,
+      url: homeUrl,
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

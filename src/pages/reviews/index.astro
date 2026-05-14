@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ReviewCard from '../../components/ReviewCard.astro';
 import { readingTime } from '../../lib/reading-time';
 import { SITE } from '../../lib/site';
+import { link } from '../../lib/path';
 
 const all = await getCollection('reviews', ({ data }) => !data.draft);
 const sorted = all.sort(
@@ -28,7 +29,7 @@ const sorted = all.sort(
     <div class="reviews-index__list">
       {sorted.map((entry) => (
         <ReviewCard
-          href={`/reviews/${entry.id}`}
+          href={link(`/reviews/${entry.id}`)}
           title={entry.data.title}
           description={entry.data.description}
           publishDate={entry.data.publishDate}

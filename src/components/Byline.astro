@@ -1,4 +1,6 @@
 ---
+import { link } from '../lib/path';
+
 type Props = {
   author: string;
   publishDate: Date;
@@ -6,7 +8,8 @@ type Props = {
   authorHref?: string;
 };
 
-const { author, publishDate, readingTime, authorHref = '/about' } = Astro.props;
+const { author, publishDate, readingTime, authorHref = link('/about') } =
+  Astro.props;
 
 const formatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',

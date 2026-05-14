@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../lib/site';
+import { link } from '../lib/path';
 const year = new Date().getFullYear();
 ---
 
@@ -11,10 +12,10 @@ const year = new Date().getFullYear();
     </div>
     <nav aria-label="Footer">
       <ul>
-        <li><a href="/about">About &amp; methodology</a></li>
-        <li><a href="/reviews">All reviews</a></li>
-        <li><a href="/rss.xml">RSS</a></li>
-        <li><a href="/feed.json">JSON feed</a></li>
+        <li><a href={link('/about')}>About &amp; methodology</a></li>
+        <li><a href={link('/reviews')}>All reviews</a></li>
+        <li><a href={link('/rss.xml')}>RSS</a></li>
+        <li><a href={link('/feed.json')}>JSON feed</a></li>
       </ul>
     </nav>
     <div class="site-footer__meta">
