@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SchemaOrg from '../components/SchemaOrg.astro';
+import { SITE } from '../lib/site';
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${SITE.title} and its author. Disclosed methodology, no affiliate fluff.`}
+  type="website"
+>
+  <SchemaOrg slot="head" type="person" />
+
+  <article class="about container-narrow">
+    <header>
+      <p class="eyebrow">About</p>
+      <h1 class="about__title">About {SITE.title}</h1>
+      <p class="about__lede">
+        {SITE.title} is an independent product-review site by {SITE.author.name}.
+        Hands-on testing, disclosed methodology, no affiliate fluff.
+      </p>
+    </header>
+
+    <section>
+      <h2>Who writes here</h2>
+      <p>
+        Hi — I'm {SITE.author.name}. I write reviews of products I actually use,
+        with notes on how I tested them and what I'd want to know before buying.
+        I don't run sponsored placements. When a review covers something I was
+        sent or given access to, that's disclosed at the top of the post.
+      </p>
+      <p>
+        <em>
+          (Replace this paragraph with a few sentences about your background,
+          the kinds of things you review, and why your perspective is useful.
+          This block is one of the strongest E-E-A-T signals search engines and
+          AI models use to attribute reviews to a credible author.)
+        </em>
+      </p>
+    </section>
+
+    <section>
+      <h2>Methodology</h2>
+      <p>
+        Every review here follows the same shape:
+      </p>
+      <ul>
+        <li>
+          <strong>What I tested</strong> — the specific version of the product,
+          how long I used it, and the conditions I tested under.
+        </li>
+        <li>
+          <strong>What worked</strong> — concrete, situation-specific wins,
+          not feature lists.
+        </li>
+        <li>
+          <strong>What didn't</strong> — the dealbreakers and the
+          paper-cuts. Both matter.
+        </li>
+        <li>
+          <strong>Who it's for</strong> — a clear "if you are X, buy this" or
+          "look elsewhere" verdict.
+        </li>
+        <li>
+          <strong>Sources</strong> — every external claim is linked.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Independence &amp; disclosures</h2>
+      <p>
+        No affiliate links unless explicitly disclosed in the post. No
+        sponsored coverage. If a vendor provides access to a paid product for
+        review, that's disclosed in the opening paragraph of the relevant
+        review.
+      </p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>
+        Reach me at <a href={`mailto:${SITE.author.email}`}>{SITE.author.email}</a>.
+        Subscribe via <a href="/rss.xml">RSS</a> or
+        <a href="/feed.json">JSON feed</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .about header {
+    margin-bottom: var(--space-7);
+  }
+
+  .about .eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .about__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .about__lede {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-ink-soft);
+    line-height: 1.45;
+    max-width: 36em;
+  }
+
+  .about section + section {
+    margin-top: var(--space-6);
+  }
+
+  .about h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .about p + p,
+  .about p + ul {
+    margin-top: var(--space-3);
+  }
+
+  .about ul {
+    padding-left: 1.25em;
+  }
+
+  .about li + li {
+    margin-top: var(--space-2);
+  }
+</style>
