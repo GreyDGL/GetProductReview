@@ -12,8 +12,8 @@ import rehypeExternalLinks from 'rehype-external-links';
 //      Also: re-create public/CNAME with 'getproductreview.com' and set up DNS.
 // Either deploy target can be overridden via env vars at build time:
 //   SITE_URL=...  BASE_PATH=...
-const SITE_URL = process.env.SITE_URL ?? 'https://greydgl.github.io';
-const BASE_PATH = process.env.BASE_PATH ?? '/GetProductReview';
+const SITE_URL = process.env.SITE_URL ?? 'https://getproductreview.com';
+const BASE_PATH = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   site: SITE_URL,

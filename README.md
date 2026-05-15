@@ -2,8 +2,9 @@
 
 Static product-review site, built with Astro, deployed to GitHub Pages.
 
-**Currently deployed at**: `https://greydgl.github.io/GetProductReview/` (GitHub Pages project page).
-**Eventual home**: `https://getproductreview.com` (custom domain on GoDaddy).
+**Deployed at**: `https://getproductreview.com` (custom apex domain on GoDaddy,
+served by GitHub Pages). The `greydgl.github.io/GetProductReview/` project URL
+redirects here once DNS resolves.
 
 ## Local development
 
@@ -32,41 +33,35 @@ builds and publishes to GitHub Pages automatically.
 The site supports two deploy targets, controlled by `SITE_URL` and `BASE_PATH`
 in `astro.config.mjs`.
 
-### A. GitHub Pages project page — current default
+### A. Custom apex domain — current default
+
+```js
+const SITE_URL = 'https://getproductreview.com';
+const BASE_PATH = '/';
+```
+
+Served at `https://getproductreview.com`. Requires `public/CNAME` (present) +
+GoDaddy DNS + the custom domain set in repo Settings → Pages.
+
+GoDaddy DNS records for `getproductreview.com`:
+
+| Type  | Host | Value           | TTL  |
+|-------|------|-----------------|------|
+| A     | @    | 185.199.108.153 | 600  |
+| A     | @    | 185.199.109.153 | 600  |
+| A     | @    | 185.199.110.153 | 600  |
+| A     | @    | 185.199.111.153 | 600  |
+| CNAME | www  | greydgl.github.io | 600 |
+
+### B. GitHub Pages project page — fallback for testing
 
 ```js
 const SITE_URL = 'https://greydgl.github.io';
 const BASE_PATH = '/GetProductReview';
 ```
 
-Served at `https://greydgl.github.io/GetProductReview/`.
-
-### B. Custom apex domain — switch when DNS is ready
-
-1. **Update `astro.config.mjs`**:
-   ```js
-   const SITE_URL = 'https://getproductreview.com';
-   const BASE_PATH = '/';
-   ```
-
-2. **Re-create the CNAME file** so GitHub Pages knows the custom domain:
-   ```bash
-   echo 'getproductreview.com' > public/CNAME
-   ```
-
-3. **Configure DNS at GoDaddy** for `getproductreview.com`:
-
-   | Type  | Host | Value |
-   |-------|------|-------|
-   | A     | @    | 185.199.108.153 |
-   | A     | @    | 185.199.109.153 |
-   | A     | @    | 185.199.110.153 |
-   | A     | @    | 185.199.111.153 |
-   | CNAME | www  | `greydgl.github.io.` |
-
-4. **In repo Settings → Pages**, set the **Custom domain** to `getproductreview.com` and enable **Enforce HTTPS**.
-
-5. Commit and push. DNS propagation can take 1–24 hours.
+Served at `https://greydgl.github.io/GetProductReview/`. Delete `public/CNAME`
+and clear the custom domain in repo Settings → Pages when using this target.
 
 ## One-time setup: Cloudflare Web Analytics
 
