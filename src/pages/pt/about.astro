@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaOrg from '../../components/SchemaOrg.astro';
+import { SITE } from '../../lib/site';
+import { link } from '../../lib/path';
+import { SITE_COPY, pageAlternatePaths } from '../../lib/i18n';
+
+const lang = 'pt';
+const copy = SITE_COPY[lang];
+---
+
+<BaseLayout
+  title={copy.about.title}
+  description={copy.about.description}
+  type="website"
+  lang={lang}
+  alternatePaths={pageAlternatePaths('/about')}
+>
+  <SchemaOrg slot="head" type="person" lang={lang} />
+
+  <article class="about container-narrow">
+    <header>
+      <p class="eyebrow">Sobre</p>
+      <h1 class="about__title">Sobre o {SITE.title}</h1>
+      <p class="about__lede">
+        {SITE.title} é um site independente de análises de produtos escrito por {SITE.author.name}.
+        Os textos usam testes práticos, metodologia clara e nada de exagero de afiliados.
+      </p>
+    </header>
+
+    <section>
+      <h2>Quem escreve aqui</h2>
+      <p>
+        Olá, eu sou {SITE.author.name}. Escrevo análises de produtos que eu realmente uso,
+        com notas sobre como testei cada opção e o que eu gostaria de saber antes de comprar.
+        Não publico colocações patrocinadas. Quando uma análise cobre algo que recebi ou
+        um acesso fornecido por fornecedor, isso é divulgado no início do texto.
+      </p>
+      <p>
+        <em>
+          (Substitua este parágrafo por algumas frases sobre sua experiência, os tipos de
+          produtos que você analisa e por que sua perspectiva é útil. Este bloco é um dos
+          sinais mais fortes de E-E-A-T que mecanismos de busca e modelos de IA usam para
+          atribuir análises a um autor confiável.)
+        </em>
+      </p>
+    </section>
+
+    <section>
+      <h2>Metodologia</h2>
+      <p>
+        Toda análise aqui segue a mesma estrutura:
+      </p>
+      <ul>
+        <li>
+          <strong>O que testei</strong> - a versão específica do produto,
+          por quanto tempo usei e em quais condições o teste aconteceu.
+        </li>
+        <li>
+          <strong>O que funcionou</strong> - ganhos concretos para situações específicas,
+          não apenas listas de recursos.
+        </li>
+        <li>
+          <strong>O que não funcionou</strong> - pontos decisivos e pequenos atritos.
+          Ambos importam.
+        </li>
+        <li>
+          <strong>Para quem serve</strong> - um veredito claro do tipo "se você é X,
+          compre isto" ou "procure outra opção".
+        </li>
+        <li>
+          <strong>Fontes</strong> - toda afirmação externa recebe link.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Independência e divulgações</h2>
+      <p>
+        Não há links de afiliados sem divulgação explícita no texto. Não há cobertura
+        patrocinada. Se um fornecedor concede acesso a um produto pago para análise,
+        isso é divulgado no parágrafo de abertura da análise correspondente.
+      </p>
+    </section>
+
+    <section>
+      <h2>Contato</h2>
+      <p>
+        Fale comigo em <a href={`mailto:${SITE.author.email}`}>{SITE.author.email}</a>.
+        Assine por <a href={link('/pt/rss.xml')}>RSS</a> ou
+        <a href={link('/pt/feed.json')}>feed JSON</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .about header {
+    margin-bottom: var(--space-7);
+  }
+
+  .about .eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .about__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .about__lede {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-ink-soft);
+    line-height: 1.45;
+    max-width: 36em;
+  }
+
+  .about section + section {
+    margin-top: var(--space-6);
+  }
+
+  .about h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .about p + p,
+  .about p + ul {
+    margin-top: var(--space-3);
+  }
+
+  .about ul {
+    padding-left: 1.25em;
+  }
+
+  .about li + li {
+    margin-top: var(--space-2);
+  }
+</style>

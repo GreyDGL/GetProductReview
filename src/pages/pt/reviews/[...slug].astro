@@ -1,17 +1,17 @@
 ---
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import ReviewLayout from '../../layouts/ReviewLayout.astro';
-import { link } from '../../lib/path';
+import ReviewLayout from '../../../layouts/ReviewLayout.astro';
+import { link } from '../../../lib/path';
 import {
   getReviewSlug,
   reviewAlternatePaths,
   reviewPath,
-} from '../../lib/i18n';
+} from '../../../lib/i18n';
 
 export async function getStaticPaths() {
   const all = await getCollection('reviews', ({ data }) => !data.draft);
-  const reviews = all.filter((entry) => entry.data.lang === 'en');
+  const reviews = all.filter((entry) => entry.data.lang === 'pt');
   return reviews.map((entry) => ({
     params: { slug: getReviewSlug(entry) },
     props: { entry, alternatePaths: reviewAlternatePaths(entry, all) },
@@ -25,7 +25,7 @@ type Props = {
 
 const { entry, alternatePaths } = Astro.props as Props;
 const { Content } = await render(entry);
-const lang = 'en';
+const lang = 'pt';
 const url = link(reviewPath(entry));
 ---
 

@@ -5,6 +5,14 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE } from '../lib/site';
 import { link } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  LANGUAGES,
+  SITE_COPY,
+  localizedPath,
+  type AlternatePath,
+  type Lang,
+} from '../lib/i18n';
 
 type Props = {
   title: string;
@@ -15,21 +23,27 @@ type Props = {
   publishedTime?: Date;
   modifiedTime?: Date;
   author?: string;
+  lang?: Lang;
+  alternatePaths?: AlternatePath[];
 };
 
 const props = Astro.props;
 const analyticsToken = SITE.cloudflareAnalyticsToken;
+const lang = props.lang ?? DEFAULT_LANG;
+const copy = SITE_COPY[lang];
+const rssPath = localizedPath('/rss.xml', lang);
+const feedPath = localizedPath('/feed.json', lang);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={LANGUAGES[lang].htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href={link('/favicon.svg')} />
-    <link rel="alternate" type="application/rss+xml" title={`${SITE.title} RSS`} href={link('/rss.xml')} />
-    <link rel="alternate" type="application/feed+json" title={`${SITE.title} JSON Feed`} href={link('/feed.json')} />
+    <link rel="alternate" type="application/rss+xml" title={copy.feeds.rssTitle} href={link(rssPath)} />
+    <link rel="alternate" type="application/feed+json" title={copy.feeds.jsonTitle} href={link(feedPath)} />
     <SEO {...props} />
     <slot name="head" />
     {analyticsToken && (
@@ -41,11 +55,11 @@ const analyticsToken = SITE.cloudflareAnalyticsToken;
     )}
   </head>
   <body>
-    <a href="#main" class="skip-link">Skip to content</a>
-    <SiteHeader />
+    <a href="#main" class="skip-link">{copy.skipLink}</a>
+    <SiteHeader lang={lang} alternatePaths={props.alternatePaths} />
     <main id="main">
       <slot />
     </main>
-    <SiteFooter />
+    <SiteFooter lang={lang} />
   </body>
 </html>

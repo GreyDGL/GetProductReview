@@ -1,6 +1,19 @@
 ---
 import { SITE } from '../lib/site';
 import { link } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  SITE_COPY,
+  localizedPath,
+  type Lang,
+} from '../lib/i18n';
+
+type Props = {
+  lang?: Lang;
+};
+
+const { lang = DEFAULT_LANG } = Astro.props;
+const copy = SITE_COPY[lang];
 const year = new Date().getFullYear();
 ---
 
@@ -8,19 +21,19 @@ const year = new Date().getFullYear();
   <div class="container site-footer__inner">
     <div>
       <p class="site-footer__brand">{SITE.title}</p>
-      <p class="site-footer__tagline">{SITE.tagline}</p>
+      <p class="site-footer__tagline">{copy.tagline}</p>
     </div>
-    <nav aria-label="Footer">
+    <nav aria-label={copy.footerLabel}>
       <ul>
-        <li><a href={link('/about')}>About &amp; methodology</a></li>
-        <li><a href={link('/reviews')}>All reviews</a></li>
-        <li><a href={link('/rss.xml')}>RSS</a></li>
-        <li><a href={link('/feed.json')}>JSON feed</a></li>
+        <li><a href={link(localizedPath('/about', lang))}>{copy.footer.about}</a></li>
+        <li><a href={link(localizedPath('/reviews', lang))}>{copy.footer.reviews}</a></li>
+        <li><a href={link(localizedPath('/rss.xml', lang))}>RSS</a></li>
+        <li><a href={link(localizedPath('/feed.json', lang))}>{copy.footer.feed}</a></li>
       </ul>
     </nav>
     <div class="site-footer__meta">
       <p>© {year} {SITE.author.name}</p>
-      <p>All reviews are independent. Methodology disclosed on every post.</p>
+      <p>{copy.footer.independent}</p>
     </div>
   </div>
 </footer>

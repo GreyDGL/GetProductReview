@@ -3,14 +3,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaOrg from '../components/SchemaOrg.astro';
 import { SITE } from '../lib/site';
 import { link } from '../lib/path';
+import { SITE_COPY, pageAlternatePaths } from '../lib/i18n';
+
+const lang = 'en';
+const copy = SITE_COPY[lang];
 ---
 
 <BaseLayout
-  title="About"
-  description={`About ${SITE.title} and its author. Disclosed methodology, no affiliate fluff.`}
+  title={copy.about.title}
+  description={copy.about.description}
   type="website"
+  lang={lang}
+  alternatePaths={pageAlternatePaths('/about')}
 >
-  <SchemaOrg slot="head" type="person" />
+  <SchemaOrg slot="head" type="person" lang={lang} />
 
   <article class="about container-narrow">
     <header>

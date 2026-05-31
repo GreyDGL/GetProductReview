@@ -1,27 +1,37 @@
 ---
 import { link } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  LANGUAGES,
+  SITE_COPY,
+  localizedPath,
+  type Lang,
+} from '../lib/i18n';
 
 type Props = {
   author: string;
   publishDate: Date;
   readingTime?: string;
   authorHref?: string;
+  lang?: Lang;
 };
 
-const { author, publishDate, readingTime, authorHref = link('/about') } =
+const { author, publishDate, readingTime, lang = DEFAULT_LANG, authorHref } =
   Astro.props;
+const resolvedAuthorHref = authorHref ?? link(localizedPath('/about', lang));
 
-const formatter = new Intl.DateTimeFormat('en-US', {
+const formatter = new Intl.DateTimeFormat(LANGUAGES[lang].dateLocale, {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 const human = formatter.format(publishDate);
 const iso = publishDate.toISOString();
+const copy = SITE_COPY[lang];
 ---
 
 <address class="byline">
-  By <a href={authorHref} rel="author">{author}</a>
+  {copy.byline.by} <a href={resolvedAuthorHref} rel="author">{author}</a>
   <span class="byline__sep">·</span>
   <time datetime={iso}>{human}</time>
   {readingTime && (

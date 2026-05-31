@@ -1,35 +1,39 @@
 import { getCollection } from 'astro:content';
 import { SITE } from '../lib/site';
 import { absoluteUrl } from '../lib/path';
+import { LANGUAGES, SITE_COPY, reviewPath, reviewsForLang } from '../lib/i18n';
 import type { APIContext } from 'astro';
 
 export async function GET(_context: APIContext) {
   const reviews = await getCollection('reviews', ({ data }) => !data.draft);
-  const sorted = reviews.sort(
-    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
-  );
 
   const lines: string[] = [
     `# ${SITE.title}`,
     '',
-    `> ${SITE.description}`,
+    `> ${SITE_COPY.en.description}`,
     '',
-    `${SITE.title} publishes long-form reviews and comparison roundups of products and platforms. Each review explains the evaluation criteria, includes a clear ranking or recommendation, and discloses methodology.`,
-    '',
-    '## Reviews',
+    `${SITE.title} publishes long-form reviews and comparison roundups of products and platforms in English and Portuguese. Each review explains the evaluation criteria, includes a clear ranking or recommendation, and discloses methodology.`,
     '',
   ];
 
-  for (const entry of sorted) {
-    const url = absoluteUrl(`/reviews/${entry.id}`, SITE.url);
-    lines.push(`- [${entry.data.title}](${url}): ${entry.data.description}`);
+  for (const lang of Object.keys(LANGUAGES) as (keyof typeof LANGUAGES)[]) {
+    const sorted = reviewsForLang(reviews, lang);
+    lines.push(`## Reviews (${LANGUAGES[lang].label})`);
+    lines.push('');
+    for (const entry of sorted) {
+      const url = absoluteUrl(reviewPath(entry), SITE.url);
+      lines.push(`- [${entry.data.title}](${url}): ${entry.data.description}`);
+    }
+    lines.push('');
   }
 
-  lines.push('');
   lines.push('## About');
   lines.push('');
   lines.push(
     `- [About ${SITE.title}](${absoluteUrl('/about', SITE.url)}): About the site, the author, methodology, and disclosures.`
+  );
+  lines.push(
+    `- [Sobre ${SITE.title}](${absoluteUrl('/pt/about', SITE.url)}): Versão em português sobre o site, o autor, a metodologia e as divulgações.`
   );
   lines.push('');
   lines.push('## Feeds');

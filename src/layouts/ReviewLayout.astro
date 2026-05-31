@@ -4,8 +4,13 @@ import SchemaOrg from '../components/SchemaOrg.astro';
 import Byline from '../components/Byline.astro';
 import Prose from '../components/Prose.astro';
 import { readingTime } from '../lib/reading-time';
-import { SITE } from '../lib/site';
 import { link } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  SITE_COPY,
+  type AlternatePath,
+  type Lang,
+} from '../lib/i18n';
 
 type ListEntry = {
   position: number;
@@ -36,11 +41,14 @@ type Props = {
     body?: string;
   };
   url: string;
+  lang?: Lang;
+  alternatePaths?: AlternatePath[];
 };
 
-const { entry, url } = Astro.props;
+const { entry, url, lang = DEFAULT_LANG, alternatePaths = [] } = Astro.props;
 const d = entry.data;
-const rt = readingTime(entry.body ?? '');
+const copy = SITE_COPY[lang];
+const rt = readingTime(entry.body ?? '', lang);
 ---
 
 <BaseLayout
@@ -51,10 +59,13 @@ const rt = readingTime(entry.body ?? '');
   publishedTime={d.publishDate}
   modifiedTime={d.updatedDate}
   author={d.author}
+  lang={lang}
+  alternatePaths={alternatePaths}
 >
   <SchemaOrg
     slot="head"
     type="review"
+    lang={lang}
     title={d.title}
     description={d.description}
     url={url}
@@ -71,10 +82,15 @@ const rt = readingTime(entry.body ?? '');
 
   <article class="review">
     <header class="review__header container-narrow">
-      <p class="eyebrow">{d.productCategory} · Review</p>
+      <p class="eyebrow">{d.productCategory} · {copy.review.label}</p>
       <h1 class="review__title">{d.title}</h1>
       <p class="review__dek">{d.description}</p>
-      <Byline author={d.author} publishDate={d.publishDate} readingTime={rt} />
+      <Byline
+        author={d.author}
+        publishDate={d.publishDate}
+        readingTime={rt}
+        lang={lang}
+      />
     </header>
 
     {d.heroImage && (
@@ -92,25 +108,22 @@ const rt = readingTime(entry.body ?? '');
     <footer class="review__footer container-narrow">
       <hr />
       <section class="review__methodology">
-        <p class="eyebrow">Methodology</p>
-        <p>
-          Reviews on {SITE.title} are independent and disclose how the product
-          was tested. See the <a href={link('/about')}>about page</a> for full methodology
-          and disclosures.
-        </p>
+        <p class="eyebrow">{copy.review.methodology}</p>
+        <p set:html={copy.review.methodologyText.replaceAll('href="/', `href="${link('/')}`)} />
       </section>
 
       <section class="review__author">
-        <p class="eyebrow">About the author</p>
-        <p>
-          <strong>{d.author}</strong> writes hands-on reviews at {SITE.title}.
-          <a href={link('/about')}>More about the author →</a>
-        </p>
+        <p class="eyebrow">{copy.review.aboutAuthor}</p>
+        <p
+          set:html={copy.review.aboutAuthorText
+            .replace('{author}', d.author)
+            .replaceAll('href="/', `href="${link('/')}`)}
+        />
       </section>
 
       <section class="review__more">
-        <p class="eyebrow">More reviews</p>
-        <p><a href={link('/reviews')}>Browse all reviews →</a></p>
+        <p class="eyebrow">{copy.review.moreReviews}</p>
+        <p set:html={copy.review.browseAll.replaceAll('href="/', `href="${link('/')}`)} />
       </section>
     </footer>
   </article>

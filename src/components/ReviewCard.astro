@@ -1,4 +1,11 @@
 ---
+import {
+  DEFAULT_LANG,
+  LANGUAGES,
+  SITE_COPY,
+  type Lang,
+} from '../lib/i18n';
+
 type Props = {
   href: string;
   title: string;
@@ -8,6 +15,7 @@ type Props = {
   rating?: number;
   productCategory?: string;
   featured?: boolean;
+  lang?: Lang;
 };
 
 const {
@@ -19,9 +27,11 @@ const {
   rating,
   productCategory,
   featured = false,
+  lang = DEFAULT_LANG,
 } = Astro.props;
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
+const copy = SITE_COPY[lang];
+const dateFormatter = new Intl.DateTimeFormat(LANGUAGES[lang].dateLocale, {
   year: 'numeric',
   month: 'short',
   day: 'numeric',
@@ -33,7 +43,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     <div class="review-card__meta">
       {productCategory && <span class="eyebrow">{productCategory}</span>}
       {typeof rating === 'number' && (
-        <span class="review-card__rating" aria-label={`Rating: ${rating} out of 10`}>
+        <span class="review-card__rating" aria-label={copy.review.rating(rating)}>
           {rating.toFixed(1)}
         </span>
       )}

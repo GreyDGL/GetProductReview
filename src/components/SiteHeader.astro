@@ -1,9 +1,35 @@
 ---
 import { SITE } from '../lib/site';
 import { link } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  LANGUAGES,
+  SITE_COPY,
+  getNavLinks,
+  localizedPath,
+  type AlternatePath,
+  type Lang,
+} from '../lib/i18n';
 
+type Props = {
+  lang?: Lang;
+  alternatePaths?: AlternatePath[];
+};
+
+const { lang = DEFAULT_LANG, alternatePaths = [] } = Astro.props;
 const path = Astro.url.pathname;
-const home = link('/');
+const copy = SITE_COPY[lang];
+const home = link(localizedPath('/', lang));
+const navLinks = getNavLinks(lang);
+const languagePaths = (Object.keys(LANGUAGES) as Lang[]).map((code) => {
+  const alternate = alternatePaths.find((item) => item.lang === code);
+  return {
+    code,
+    href: link(alternate?.path ?? localizedPath('/', code)),
+    label: LANGUAGES[code].shortLabel,
+    active: code === lang,
+  };
+});
 ---
 
 <header class="site-header">
@@ -11,9 +37,9 @@ const home = link('/');
     <a href={home} class="site-header__wordmark" aria-label={`${SITE.title} home`}>
       <span class="wordmark">{SITE.title}</span>
     </a>
-    <nav class="site-header__nav" aria-label="Primary">
+    <nav class="site-header__nav" aria-label={copy.navLabel}>
       <ul>
-        {SITE.navLinks.map((navItem) => {
+        {navLinks.map((navItem) => {
           const href = link(navItem.href);
           const active = href === home
             ? path === home
@@ -26,6 +52,17 @@ const home = link('/');
             </li>
           );
         })}
+      </ul>
+    </nav>
+    <nav class="site-header__languages" aria-label={copy.languageLabel}>
+      <ul>
+        {languagePaths.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.active ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </div>
@@ -57,7 +94,8 @@ const home = link('/');
     letter-spacing: -0.015em;
   }
 
-  .site-header__nav ul {
+  .site-header__nav ul,
+  .site-header__languages ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -65,7 +103,8 @@ const home = link('/');
     gap: var(--space-5);
   }
 
-  .site-header__nav a {
+  .site-header__nav a,
+  .site-header__languages a {
     color: var(--color-ink-soft);
     font-size: 0.95rem;
     text-decoration: none;
@@ -75,9 +114,20 @@ const home = link('/');
   }
 
   .site-header__nav a:hover,
-  .site-header__nav a[aria-current='page'] {
+  .site-header__nav a[aria-current='page'],
+  .site-header__languages a:hover,
+  .site-header__languages a[aria-current='page'] {
     color: var(--color-ink);
     border-bottom-color: var(--color-accent);
+  }
+
+  .site-header__languages ul {
+    gap: var(--space-3);
+  }
+
+  .site-header__languages a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
   }
 
   @media (max-width: 520px) {

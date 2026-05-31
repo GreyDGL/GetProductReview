@@ -1,13 +1,22 @@
 ---
 import { SITE } from '../lib/site';
 import { absoluteUrl } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  LANGUAGES,
+  SITE_COPY,
+  localizedPath,
+  type Lang,
+} from '../lib/i18n';
 
 type WebsiteProps = {
   type: 'website';
+  lang?: Lang;
 };
 
 type PersonProps = {
   type: 'person';
+  lang?: Lang;
 };
 
 type ListEntry = {
@@ -20,6 +29,7 @@ type ListEntry = {
 
 type ReviewProps = {
   type: 'review';
+  lang?: Lang;
   title: string;
   description: string;
   url: string;
@@ -37,9 +47,11 @@ type ReviewProps = {
 type Props = WebsiteProps | PersonProps | ReviewProps;
 
 const props = Astro.props as Props;
+const lang = props.lang ?? DEFAULT_LANG;
+const copy = SITE_COPY[lang];
 
-const homeUrl = absoluteUrl('/', SITE.url);
-const authorUrl = absoluteUrl(SITE.author.aboutPath, SITE.url);
+const homeUrl = absoluteUrl(localizedPath('/', lang), SITE.url);
+const authorUrl = absoluteUrl(localizedPath(SITE.author.aboutPath, lang), SITE.url);
 
 const authorPerson = {
   '@type': 'Person',
@@ -56,9 +68,9 @@ if (props.type === 'website') {
     '@type': 'WebSite',
     name: SITE.title,
     url: homeUrl,
-    description: SITE.description,
+    description: copy.description,
     publisher: authorPerson,
-    inLanguage: 'en-US',
+    inLanguage: LANGUAGES[lang].schemaLanguage,
   };
 } else if (props.type === 'person') {
   jsonLd = {
@@ -96,6 +108,7 @@ if (props.type === 'website') {
       '@id': reviewURL,
     },
     articleSection: props.productCategory,
+    inLanguage: LANGUAGES[lang].schemaLanguage,
   };
 
   if (props.itemList && props.itemList.length > 0) {

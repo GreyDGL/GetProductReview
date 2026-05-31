@@ -1,6 +1,13 @@
 ---
 import { SITE } from '../lib/site';
 import { absoluteUrl } from '../lib/path';
+import {
+  DEFAULT_LANG,
+  LANGUAGES,
+  SITE_COPY,
+  type AlternatePath,
+  type Lang,
+} from '../lib/i18n';
 
 type Props = {
   title: string;
@@ -11,19 +18,25 @@ type Props = {
   publishedTime?: Date;
   modifiedTime?: Date;
   author?: string;
+  lang?: Lang;
+  alternatePaths?: AlternatePath[];
 };
 
 const {
   title,
-  description = SITE.description,
+  description,
   canonical,
   image,
   type = 'website',
   publishedTime,
   modifiedTime,
   author,
+  lang = DEFAULT_LANG,
+  alternatePaths = [],
 } = Astro.props;
 
+const copy = SITE_COPY[lang];
+const metaDescription = description ?? copy.description;
 const fullTitle =
   title === SITE.title ? title : `${title} — ${SITE.title}`;
 
@@ -39,16 +52,38 @@ const ogImage = image
 ---
 
 <title>{fullTitle}</title>
-<meta name="description" content={description} />
+<meta name="description" content={metaDescription} />
 <link rel="canonical" href={canonicalURL} />
+{alternatePaths.map((alternate) => (
+  <link
+    rel="alternate"
+    hreflang={LANGUAGES[alternate.lang].hreflang}
+    href={absoluteUrl(alternate.path, SITE.url)}
+  />
+))}
+{alternatePaths.some((alternate) => alternate.lang === DEFAULT_LANG) && (
+  <link
+    rel="alternate"
+    hreflang="x-default"
+    href={absoluteUrl(
+      alternatePaths.find((alternate) => alternate.lang === DEFAULT_LANG)?.path ?? '/',
+      SITE.url
+    )}
+  />
+)}
 
 <meta property="og:type" content={type} />
 <meta property="og:site_name" content={SITE.title} />
 <meta property="og:title" content={fullTitle} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={metaDescription} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:locale" content={SITE.locale} />
+<meta property="og:locale" content={LANGUAGES[lang].ogLocale} />
+{alternatePaths
+  .filter((alternate) => alternate.lang !== lang)
+  .map((alternate) => (
+    <meta property="og:locale:alternate" content={LANGUAGES[alternate.lang].ogLocale} />
+  ))}
 
 {type === 'article' && publishedTime && (
   <meta property="article:published_time" content={publishedTime.toISOString()} />
@@ -62,5 +97,5 @@ const ogImage = image
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImage} />
