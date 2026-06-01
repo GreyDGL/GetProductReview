@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaOrg from '../../components/SchemaOrg.astro';
+import { SITE } from '../../lib/site';
+import { link } from '../../lib/path';
+import { SITE_COPY, pageAlternatePaths } from '../../lib/i18n';
+
+const lang = 'is';
+const copy = SITE_COPY[lang];
+---
+
+<BaseLayout
+  title={copy.about.title}
+  description={copy.about.description}
+  type="website"
+  lang={lang}
+  alternatePaths={pageAlternatePaths('/about')}
+>
+  <SchemaOrg slot="head" type="person" lang={lang} />
+
+  <article class="about container-narrow">
+    <header>
+      <p class="eyebrow">Um okkur</p>
+      <h1 class="about__title">Um {SITE.title}</h1>
+      <p class="about__lede">
+        {SITE.title} er óháð vöruumsagnasíða eftir {SITE.author.name}.
+        Hér eru hagnýtar prófanir, skýr aðferðafræði og enginn tenglasöluhávaði.
+      </p>
+    </header>
+
+    <section>
+      <h2>Hver skrifar hér</h2>
+      <p>
+        Halló, ég heiti {SITE.author.name}. Ég skrifa umsagnir um vörur sem ég
+        nota sjálfur, með athugasemdum um hvernig ég prófaði þær og hvað ég
+        vildi vita áður en ég keypti. Ég birti ekki kostaðar staðsetningar. Ef
+        umsögn fjallar um vöru eða aðgang sem ég fékk frá söluaðila er það tekið
+        fram efst í viðkomandi grein.
+      </p>
+      <p>
+        <em>
+          (Skiptu þessum kafla út fyrir nokkrar setningar um bakgrunn þinn,
+          hvaða vörur þú fjallar um og hvers vegna sjónarhorn þitt er gagnlegt.
+          Þetta er eitt sterkasta E-E-A-T merkið sem leitarvélar og gervigreindarlíkön
+          nota til að tengja umsagnir við trúverðugan höfund.)
+        </em>
+      </p>
+    </section>
+
+    <section>
+      <h2>Aðferðafræði</h2>
+      <p>
+        Hver umsögn hér fylgir sömu uppbyggingu:
+      </p>
+      <ul>
+        <li>
+          <strong>Hvað ég prófaði</strong> - nákvæm útgáfa vörunnar,
+          hversu lengi ég notaði hana og við hvaða aðstæður prófun fór fram.
+        </li>
+        <li>
+          <strong>Hvað virkaði</strong> - áþreifanlegir kostir í raunverulegum
+          aðstæðum, ekki bara eiginleikalistar.
+        </li>
+        <li>
+          <strong>Hvað virkaði ekki</strong> - atriði sem geta ráðið úrslitum
+          og litlir núningar. Hvort tveggja skiptir máli.
+        </li>
+        <li>
+          <strong>Fyrir hvern þetta er</strong> - skýr niðurstaða á borð við
+          "ef þú ert X, keyptu þetta" eða "leitaðu annað".
+        </li>
+        <li>
+          <strong>Heimildir</strong> - allar ytri fullyrðingar fá tengil.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Óhæði og upplýsingar</h2>
+      <p>
+        Engir affiliate-tenglar nema það sé tekið skýrt fram í greininni. Engin
+        kostuð umfjöllun. Ef söluaðili veitir aðgang að gjaldskyldri vöru til
+        umsagnar er það tekið fram í inngangi viðkomandi umsagnar.
+      </p>
+    </section>
+
+    <section>
+      <h2>Hafa samband</h2>
+      <p>
+        Hafðu samband í <a href={`mailto:${SITE.author.email}`}>{SITE.author.email}</a>.
+        Gerast áskrifandi með <a href={link('/is/rss.xml')}>RSS</a> eða
+        <a href={link('/is/feed.json')}>JSON-straumi</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .about header {
+    margin-bottom: var(--space-7);
+  }
+
+  .about .eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .about__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .about__lede {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-ink-soft);
+    line-height: 1.45;
+    max-width: 36em;
+  }
+
+  .about section + section {
+    margin-top: var(--space-6);
+  }
+
+  .about h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .about p + p,
+  .about p + ul {
+    margin-top: var(--space-3);
+  }
+
+  .about ul {
+    padding-left: 1.25em;
+  }
+
+  .about li + li {
+    margin-top: var(--space-2);
+  }
+</style>

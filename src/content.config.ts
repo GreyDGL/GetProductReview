@@ -14,7 +14,7 @@ const reviews = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    lang: z.enum(['en', 'pt']).default('en'),
+    lang: z.enum(['en', 'pt', 'is']).default('en'),
     translationKey: z.string().optional(),
     slug: z.string().optional(),
     publishDate: z.coerce.date(),

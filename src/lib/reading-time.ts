@@ -3,6 +3,7 @@ const WORDS_PER_MINUTE = 220;
 const LABELS = {
   en: 'min read',
   pt: 'min de leitura',
+  is: 'mín. lestur',
 } as const;
 
 type Lang = keyof typeof LABELS;

@@ -19,6 +19,15 @@ export const LANGUAGES = {
     ogLocale: 'pt_BR',
     schemaLanguage: 'pt-BR',
   },
+  is: {
+    label: 'Íslenska',
+    shortLabel: 'IS',
+    htmlLang: 'is',
+    hreflang: 'is',
+    dateLocale: 'is-IS',
+    ogLocale: 'is_IS',
+    schemaLanguage: 'is',
+  },
 } as const;
 
 export type Lang = keyof typeof LANGUAGES;
@@ -149,6 +158,66 @@ export const SITE_COPY = {
     feeds: {
       rssTitle: 'GetProductReview RSS em português',
       jsonTitle: 'GetProductReview Feed JSON em português',
+    },
+  },
+  is: {
+    title: 'GetProductReview',
+    tagline: 'Heiðarlegar, prófaðar vöruumsagnir.',
+    description:
+      'Óháðar vöruumsagnir með skýrri aðferðafræði. Enginn tenglasöluhávaði -- aðeins tölur, skjáskot og atriði sem skipta máli.',
+    skipLink: 'Fara í efni',
+    navLabel: 'Aðalvalmynd',
+    footerLabel: 'Fótur',
+    languageLabel: 'Tungumál',
+    nav: {
+      reviews: 'Umsagnir',
+      about: 'Um okkur',
+      rss: 'RSS',
+    },
+    index: {
+      moreReviews: 'Fleiri umsagnir',
+      empty:
+        'Fyrsta umsögnin kemur fljótlega. <a href="/is/about">Um síðuna -></a>',
+      seeAll: 'Sjá allar umsagnir ->',
+    },
+    reviews: {
+      eyebrow: 'Yfirlit',
+      title: 'Allar umsagnir',
+      description: 'Allar umsagnir sem hafa verið birtar á GetProductReview.',
+      count: (count: number) =>
+        `${count} ${count === 1 ? 'umsögn birt' : 'umsagnir birtar'}.`,
+      empty: 'Engar umsagnir enn. Komdu aftur síðar.',
+    },
+    review: {
+      label: 'Umsögn',
+      rating: (rating: number) => `Einkunn: ${rating} af 10`,
+      methodology: 'Aðferðafræði',
+      methodologyText:
+        'Umsagnir á GetProductReview eru óháðar og útskýra hvernig varan var prófuð. Sjá <a href="/is/about">um síðuna</a> fyrir fulla aðferðafræði og upplýsingar um hagsmuni.',
+      aboutAuthor: 'Um höfundinn',
+      aboutAuthorText:
+        '<strong>{author}</strong> skrifar hagnýtar umsagnir á GetProductReview. <a href="/is/about">Meira um höfundinn -></a>',
+      moreReviews: 'Fleiri umsagnir',
+      browseAll: '<a href="/is/reviews">Skoða allar umsagnir -></a>',
+    },
+    byline: {
+      by: 'Eftir',
+    },
+    footer: {
+      about: 'Um okkur og aðferðafræði',
+      reviews: 'Allar umsagnir',
+      feed: 'JSON-straumur',
+      independent:
+        'Allar umsagnir eru óháðar. Aðferðafræði er birt í hverri grein.',
+    },
+    about: {
+      title: 'Um okkur',
+      description:
+        'Um GetProductReview og höfundinn. Skýr aðferðafræði, enginn tenglasöluhávaði.',
+    },
+    feeds: {
+      rssTitle: 'GetProductReview RSS á íslensku',
+      jsonTitle: 'GetProductReview JSON-straumur á íslensku',
     },
   },
 } as const;
